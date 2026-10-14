@@ -38,7 +38,7 @@ builds to static files, with no database or server runtime to manage.
   chapter navigation, audio downloads, show notes, and transcripts.
 - **The people are part of the story.** Define hosts and guests once in YAML, then reference them
   from episodes. Profiles collect their recent appearances, and journal authors use the same host
-  data.
+  data. Each person has a separate YAML file; its filename supplies their ID.
 - **A podcast feed with more context.** Audio enclosures, show and episode artwork, full HTML show
   notes, iTunes metadata, and Podcast Namespace support for transcripts, chapters, and people.
 - **Writing alongside listening.** A companion journal with author profiles and optional links to
@@ -68,8 +68,8 @@ Open the local URL printed by Astro, usually `http://localhost:4321`.
    artwork, navigation, and listening platforms in
    [`src/data/config.ts`](src/data/config.ts).
 2. **Introduce your people.** Replace the demo profiles in
-   [`src/data/hosts.yaml`](src/data/hosts.yaml) and
-   [`src/data/guests.yaml`](src/data/guests.yaml). Add portraits in `public/people/`.
+   [`src/data/hosts/`](src/data/hosts/) and
+   [`src/data/guests/`](src/data/guests/). Add portraits in `public/people/`.
 3. **Publish your conversations.** Add episodes to `src/content/episodes/` and journal posts to
    `src/content/blog/`. Point episodes at your audio files and square PNG/JPEG covers.
 4. **Adjust the design.** Edit [`src/styles/token.css`](src/styles/token.css), the logo in

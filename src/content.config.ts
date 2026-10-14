@@ -1,5 +1,5 @@
 import { defineCollection, reference } from 'astro:content'
-import { file, glob } from 'astro/loaders'
+import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 import { durationSchema, timestampSchema } from './lib/time'
 import { transcriptSchema } from './lib/transcript'
@@ -23,12 +23,12 @@ const person = z.object({
 })
 
 const hosts = defineCollection({
-  loader: file('./src/data/hosts.yaml'),
+  loader: glob({ base: './src/data/hosts', pattern: '**/*.yaml' }),
   schema: person,
 })
 
 const guests = defineCollection({
-  loader: file('./src/data/guests.yaml'),
+  loader: glob({ base: './src/data/guests', pattern: '**/*.yaml' }),
   schema: person,
 })
 

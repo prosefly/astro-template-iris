@@ -28,7 +28,7 @@ function resolvePeople<Entry extends Person>(
 export async function getHosts(): Promise<Host[]> {
   const hosts = await getCollection('hosts')
   if (hosts.length === 0)
-    throw new Error('Add at least one host to src/data/hosts.yaml.')
+    throw new Error('Add at least one host YAML file to src/data/hosts/.')
   return hosts
 }
 
