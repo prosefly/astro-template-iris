@@ -1,0 +1,19 @@
+---
+import Brand from './Brand.astro'
+import { config } from '@/data/config'
+const pathname = Astro.url.pathname
+---
+
+<header class="site-header wrap">
+  <Brand />
+  <nav aria-label="Main navigation">
+    {config.navigation.map((link) => (
+      <a
+        href={link.href}
+        aria-current={pathname.startsWith(link.href) ? 'page' : undefined}
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</header>

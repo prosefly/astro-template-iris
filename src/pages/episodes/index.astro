@@ -1,0 +1,10 @@
+---
+import EpisodeArchive from '@/components/EpisodeArchive.astro'
+import { config } from '@/data/config'
+import { getEpisodes } from '@/lib/content'
+import { createPaginationPage } from '@/lib/pagination'
+const episodes = await getEpisodes()
+const page = createPaginationPage(episodes, 1, config.content.episodes.perPage)
+---
+
+<EpisodeArchive page={page} episodes={episodes} />

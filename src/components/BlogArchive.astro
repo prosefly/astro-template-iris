@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PostList from '@/components/PostList.astro'
+import ListenBanner from '@/components/ListenBanner.astro'
+import Pagination from './Pagination.astro'
+import { archivePageUrl, type PaginationPage } from '@/lib/pagination'
+import type { BlogPost } from '@/lib/content'
+interface Props {
+  page: PaginationPage<BlogPost>
+}
+const { page } = Astro.props
+---
+
+<BaseLayout
+  title={
+    page.currentPage === 1
+      ? 'The journal — Iris'
+      : `The journal — Page ${page.currentPage} — Iris`
+  }
+  previousUrl={
+    page.currentPage > 1
+      ? archivePageUrl('/blog/', page.currentPage - 1)
+      : undefined
+  }
+  nextUrl={
+    page.currentPage < page.totalPages
+      ? archivePageUrl('/blog/', page.currentPage + 1)
+      : undefined
+  }
+  description="Field notes, loose thoughts, and stories from beyond the microphone."
+>
+  <section class="archive wrap">
+    <header class="page-intro">
+      <span class="eyebrow">Beyond the microphone</span>
+      <h1>
+        Some thoughts
+        <br />
+        <em>need a page.</em>
+      </h1>
+      <p>
+        A companion to the conversations. Field notes, small discoveries, and
+        the occasional longer thought.
+      </p>
+    </header>
+    <PostList posts={page.items} />
+    <Pagination
+      currentPage={page.currentPage}
+      totalPages={page.totalPages}
+      base="/blog/"
+      label="Journal pagination"
+    />
+    {page.totalItems === 0 && <p>The journal is just getting started.</p>}
+  </section>
+  <ListenBanner />
+</BaseLayout>

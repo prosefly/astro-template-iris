@@ -1,0 +1,33 @@
+---
+import type { GetStaticPaths } from 'astro'
+import EpisodeArchive from '@/components/EpisodeArchive.astro'
+import { config } from '@/data/config'
+import { getEpisodes, type Episode } from '@/lib/content'
+import { createPaginationPage, type PaginationPage } from '@/lib/pagination'
+export const getStaticPaths = (async () => {
+  const episodes = await getEpisodes()
+  const first = createPaginationPage(
+    episodes,
+    1,
+    config.content.episodes.perPage,
+  )
+  return Array.from({ length: first.totalPages - 1 }, (_, index) => {
+    const page = createPaginationPage(
+      episodes,
+      index + 2,
+      config.content.episodes.perPage,
+    )
+    return {
+      params: { page: String(page.currentPage) },
+      props: { page, episodes },
+    }
+  })
+}) satisfies GetStaticPaths
+interface Props {
+  page: PaginationPage<Episode>
+  episodes: Episode[]
+}
+const { page, episodes } = Astro.props
+---
+
+<EpisodeArchive page={page} episodes={episodes} />

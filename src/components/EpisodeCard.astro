@@ -1,0 +1,54 @@
+---
+import { Badge, Icon } from '@prosefly/astro-components'
+import {
+  formatDate,
+  formatTime,
+  formatNames,
+  type Episode,
+} from '@/lib/content'
+interface Props {
+  episode: Episode
+}
+const { episode } = Astro.props
+const { data } = episode
+const featuredPeople =
+  episode.guests.length > 0 ? episode.guests : episode.hosts
+---
+
+<article
+  class="episode-card"
+  data-episode-card
+  data-category={data.category}
+  data-search={`${data.title} ${formatNames([...episode.hosts, ...episode.guests])} ${data.description}`.toLowerCase()}
+>
+  <a
+    class="episode-art"
+    href={`/episodes/${episode.id}/`}
+    aria-label={`Listen to ${data.title}`}
+  >
+    <img src={data.artwork} alt="" width="640" height="640" loading="lazy" />
+    <span class="episode-play">
+      <Icon name="lucide:play" size={20} />
+    </span>
+  </a>
+  <div class="card-meta">
+    <span>EP. {String(data.number).padStart(2, '0')}</span>
+    <Badge variant="outline">{data.category}</Badge>
+  </div>
+  <h3>
+    <a href={`/episodes/${episode.id}/`}>{data.title}</a>
+  </h3>
+  <p>
+    {formatNames(featuredPeople)}
+    {featuredPeople.length === 1 && ` · ${featuredPeople[0].data.role}`}
+  </p>
+  <div class="card-foot">
+    <time datetime={data.publishedAt.toISOString()}>
+      {formatDate(data.publishedAt)}
+    </time>
+    <span>
+      {formatTime(data.audio.duration)}{' '}
+      <Icon name="lucide:headphones" size={14} />
+    </span>
+  </div>
+</article>

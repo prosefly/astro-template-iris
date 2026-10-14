@@ -1,0 +1,84 @@
+---
+import SiteHeader from '@/components/SiteHeader.astro'
+import SiteFooter from '@/components/SiteFooter.astro'
+import { config } from '@/data/config'
+import '@/styles/global.css'
+interface Props {
+  title?: string
+  description?: string
+  image?: string
+  type?: 'website' | 'article'
+  previousUrl?: string
+  nextUrl?: string
+  authors?: string[]
+}
+const {
+  title = config.site.title,
+  description = config.site.description,
+  image = config.podcast.artwork,
+  type = 'website',
+  previousUrl,
+  nextUrl,
+  authors = [],
+} = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site)
+---
+
+<!doctype html>
+<html lang={config.site.language} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {authors.length > 0 && <meta name="author" content={authors.join(', ')} />}
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f6f3eb" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    {previousUrl && <link rel="prev" href={new URL(previousUrl, Astro.site)} />}
+    {nextUrl && <link rel="next" href={new URL(nextUrl, Astro.site)} />}
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Iris podcast"
+      href="/podcast.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Iris journal"
+      href="/rss.xml"
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={type} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      // Keep multiple embedded players from talking over one another.
+      document.addEventListener(
+        'play',
+        (event) => {
+          if (!(event.target instanceof HTMLAudioElement)) return
+          const playing = event.target
+          document.querySelectorAll('audio').forEach((audio) => {
+            if (audio !== playing) audio.pause()
+          })
+        },
+        true,
+      )
+    </script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+---
+import { Icon } from '@prosefly/astro-components'
+import { config } from '@/data/config'
+---
+
+<aside class="podcast-platforms" aria-labelledby="platforms-heading">
+  <div class="show-identity">
+    <img src={config.podcast.artwork} alt="" width="64" height="64" />
+    <div>
+      <span class="eyebrow">The podcast</span>
+      <p>{config.site.name}</p>
+    </div>
+  </div>
+  <h2 id="platforms-heading">Take {config.site.name} with you.</h2>
+  <p class="platforms-description">
+    Listen in your favorite app, or subscribe with RSS.
+  </p>
+  <nav aria-label="Podcast listening platforms">
+    <ul>
+      {config.podcast.platforms.map((platform) => (
+        <li>
+          <a href={platform.href}>
+            <Icon name={platform.icon} size={19} />
+            <span>{platform.label}</span>
+            <Icon
+              name={
+                platform.href.startsWith('/')
+                  ? 'lucide:arrow-right'
+                  : 'lucide:arrow-up-right'
+              }
+              size={16}
+            />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+<style>
+  .podcast-platforms {
+    padding: var(--panel-padding);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    min-width: 0;
+  }
+  .show-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  .show-identity img {
+    border-radius: var(--radius-sm);
+  }
+  .show-identity .eyebrow {
+    font-size: var(--text-fine);
+  }
+  .show-identity p {
+    font-family: var(--font-serif);
+    font-size: var(--text-show-name);
+    line-height: var(--line-height-title);
+    margin: var(--space-1) 0 0;
+  }
+  h2 {
+    font-size: var(--text-platform-title);
+    line-height: var(--line-height-platform-heading);
+    margin-bottom: var(--space-3);
+  }
+  .platforms-description {
+    color: var(--color-muted);
+    font-size: var(--text-ui);
+    margin-bottom: var(--space-5);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li + li {
+    border-top: 1px solid var(--color-line);
+  }
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+    font-size: var(--text-small);
+  }
+  a span {
+    flex: 1;
+  }
+  a:hover {
+    color: var(--color-accent);
+  }
+</style>

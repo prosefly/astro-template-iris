@@ -1,0 +1,89 @@
+---
+import { Icon } from '@prosefly/astro-components'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import ListenBanner from '@/components/ListenBanner.astro'
+import { config } from '@/data/config'
+---
+
+<BaseLayout
+  title={`About ${config.site.name} — The podcast & journal`}
+  description={config.site.description}
+>
+  <section class="about wrap">
+    <header class="page-intro">
+      <span class="eyebrow">About {config.site.name}</span>
+      <h1>
+        A place to listen.
+        <br />
+        <em>Room to think.</em>
+      </h1>
+      <p>{config.site.description}</p>
+    </header>
+    <div class="about-grid">
+      <div class="about-art">
+        <img
+          src={config.podcast.artwork}
+          alt={`${config.site.name} podcast artwork`}
+          width="640"
+          height="640"
+        />
+        <span class="eyebrow">Independent by design. Curious by nature.</span>
+      </div>
+      <div class="prose">
+        <h2>A little room for big ideas.</h2>
+        <p>
+          {config.site.name} is an independent podcast and journal for people
+          who enjoy looking a little closer. It is a home for unhurried
+          conversations about creativity, culture, and the ordinary things that
+          make a life.
+        </p>
+        <p>
+          Each conversation starts with curiosity. The aim is to leave with a
+          different perspective, a question worth carrying, or a small idea to
+          try in your own day.
+        </p>
+        <h2>The podcast comes first.</h2>
+        <p>
+          Episodes are the heart of this site. Alongside each recording, you’ll
+          find show notes, a transcript, and chapters that help you return to a
+          moment worth keeping.
+        </p>
+        <a class="text-link" href="/episodes/">
+          Find a conversation <Icon name="lucide:arrow-up-right" size={17} />
+        </a>
+        <h2>The journal keeps it going.</h2>
+        <p>
+          The journal is a companion to the listening room: field notes, ideas
+          after a recording, and stories that need a page of their own. Some
+          pieces follow an episode. Others begin somewhere entirely different.
+        </p>
+        <a class="text-link" href="/blog/">
+          Explore the journal <Icon name="lucide:arrow-up-right" size={17} />
+        </a>
+        <h2>Every conversation has people behind it.</h2>
+        <p>
+          Meet the hosts who ask the questions and the guests who bring their
+          experience, craft, and way of seeing. Their profiles collect the
+          conversations and writing they’ve contributed to.
+        </p>
+        <div class="about-people-links">
+          <a class="text-link" href="/hosts/">
+            Meet the hosts <Icon name="lucide:arrow-up-right" size={17} />
+          </a>
+          <a class="text-link" href="/guests/">
+            Meet the guests <Icon name="lucide:arrow-up-right" size={17} />
+          </a>
+        </div>
+        <h2>Follow at your own pace.</h2>
+        <p>
+          Listen here or subscribe to the{' '}
+          <a href="/podcast.xml">podcast RSS feed</a> in your preferred app.
+          Follow the <a href="/rss.xml">journal RSS feed</a> in a reader.
+          There’s no perfect order to begin in—choose something that makes you
+          curious.
+        </p>
+      </div>
+    </div>
+  </section>
+  <ListenBanner />
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import { Icon } from '@prosefly/astro-components'
+import { formatDate, readingTime, type BlogPost } from '@/lib/content'
+interface Props {
+  posts: BlogPost[]
+}
+const { posts } = Astro.props
+---
+
+<div class="post-list">
+  {posts.map((post) => (
+    <article class="post-row">
+      <div class="post-meta">
+        <span class="eyebrow">{post.data.category}</span>
+        <time datetime={post.data.publishedAt.toISOString()}>
+          {formatDate(post.data.publishedAt)}
+        </time>
+      </div>
+      <div>
+        <h3>
+          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+        </h3>
+        <p>{post.data.description}</p>
+        <span class="read-time">{readingTime(post.body)}</span>
+      </div>
+      <a
+        class="post-arrow"
+        href={`/blog/${post.id}/`}
+        aria-label={`Read ${post.data.title}`}
+      >
+        <Icon name="lucide:arrow-up-right" size={25} />
+      </a>
+    </article>
+  ))}
+</div>

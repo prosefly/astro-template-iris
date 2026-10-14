@@ -1,0 +1,40 @@
+---
+import { archivePageUrl } from '@/lib/pagination'
+interface Props {
+  currentPage: number
+  totalPages: number
+  base: string
+  label: string
+}
+const { currentPage, totalPages, base, label } = Astro.props
+---
+
+{totalPages > 1 && (
+  <nav class="pagination" aria-label={label}>
+    <div>
+      {currentPage > 1 && (
+        <a
+          class="text-link"
+          href={archivePageUrl(base, currentPage - 1)}
+          rel="prev"
+        >
+          ← Previous
+        </a>
+      )}
+    </div>
+    <span>
+      Page {currentPage} of {totalPages}
+    </span>
+    <div>
+      {currentPage < totalPages && (
+        <a
+          class="text-link"
+          href={archivePageUrl(base, currentPage + 1)}
+          rel="next"
+        >
+          Next →
+        </a>
+      )}
+    </div>
+  </nav>
+)}

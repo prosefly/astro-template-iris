@@ -1,0 +1,30 @@
+{
+  "generator": "Built-in imagegen",
+  "portraits": [
+    {
+      "id": "alex-morgan",
+      "asset": "/people/alex-morgan.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: square avatar portrait for a fictional podcast host, Alex Morgan, in an editorial podcast website. Subject: one fictional adult woman in her mid-thirties, short dark brown hair, friendly thoughtful expression, natural skin texture, wearing a simple dark green cotton shirt. Composition: a centered close head-and-shoulders portrait, face looking at the camera, full hair and both shoulders inside the frame with generous breathing room for a circular avatar crop, square image. Style: authentic editorial portrait photography, soft daylight, quiet warm off-white studio background, understated warm color grading. Avoid: text, names, labels, logos, watermarks, props, multiple people, glossy stock-photo retouching. This is an invented person, not a real public figure."
+    },
+    {
+      "id": "elliot-reed",
+      "asset": "/people/elliot-reed.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: square avatar portrait for fictional podcast guest elliot-reed. Subject: one person only, a fictional adult man in his early forties, short wavy dark hair, subtle stubble, round glasses, relaxed thoughtful expression, plain charcoal shirt. Composition: centered close head-and-shoulders portrait, looking at the camera, full hair and both shoulders inside the image with generous breathing room for a circular avatar crop. Style: authentic editorial portrait photography, natural skin texture, soft window daylight, a quiet warm off-white studio background, understated warm color grading; matches an independent podcast website. Avoid: text, names, labels, watermarks, logos, props, multiple people, glossy retouching. This is an invented person, not a real public figure."
+    },
+    {
+      "id": "maya-chen",
+      "asset": "/people/maya-chen.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: square avatar portrait for fictional podcast guest maya-chen. Subject: one person only, a fictional adult East Asian woman in her early thirties, straight chin-length black hair, warm natural smile, simple muted sage shirt. Composition: centered close head-and-shoulders portrait, looking at the camera, full hair and both shoulders inside the image with generous breathing room for a circular avatar crop. Style: authentic editorial portrait photography, natural skin texture, soft window daylight, a quiet warm off-white studio background, understated warm color grading; matches an independent podcast website. Avoid: text, names, labels, watermarks, logos, props, multiple people, glossy retouching. This is an invented person, not a real public figure."
+    },
+    {
+      "id": "june-park",
+      "asset": "/people/june-park.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: square avatar portrait for fictional podcast guest june-park. Subject: one person only, a fictional adult East Asian woman in her mid-thirties, short softly wavy dark hair, lively kind expression, simple muted terracotta cotton shirt. Composition: centered close head-and-shoulders portrait, looking at the camera, full hair and both shoulders inside the image with generous breathing room for a circular avatar crop. Style: authentic editorial portrait photography, natural skin texture, soft window daylight, a quiet warm off-white studio background, understated warm color grading; matches an independent podcast website. Avoid: text, names, labels, watermarks, logos, props, multiple people, glossy retouching. This is an invented person, not a real public figure."
+    },
+    {
+      "id": "sam-rivera",
+      "asset": "/people/sam-rivera.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: square avatar portrait for fictional podcast guest sam-rivera. Subject: one person only, a fictional adult man in his late thirties with medium-brown skin, curly dark hair and light stubble, friendly relaxed expression, simple cream linen shirt. Composition: centered close head-and-shoulders portrait, looking at the camera, full hair and both shoulders inside the image with generous breathing room for a circular avatar crop. Style: authentic editorial portrait photography, natural skin texture, soft window daylight, a quiet warm off-white studio background, understated warm color grading; matches an independent podcast website. Avoid: text, names, labels, watermarks, logos, props, multiple people, glossy retouching. This is an invented person, not a real public figure."
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import EpisodeCard from '@/components/EpisodeCard.astro'
+import ListenBanner from '@/components/ListenBanner.astro'
+import Pagination from './Pagination.astro'
+import { config } from '@/data/config'
+import { archivePageUrl, type PaginationPage } from '@/lib/pagination'
+import type { Episode } from '@/lib/content'
+interface Props {
+  page: PaginationPage<Episode>
+  episodes: Episode[]
+}
+const { page, episodes } = Astro.props
+const categories = [
+  ...new Set(episodes.map((episode) => episode.data.category)),
+]
+---
+
+<BaseLayout
+  title={
+    page.currentPage === 1
+      ? 'Episodes — Iris'
+      : `Episodes — Page ${page.currentPage} — Iris`
+  }
+  previousUrl={
+    page.currentPage > 1
+      ? archivePageUrl('/episodes/', page.currentPage - 1)
+      : undefined
+  }
+  nextUrl={
+    page.currentPage < page.totalPages
+      ? archivePageUrl('/episodes/', page.currentPage + 1)
+      : undefined
+  }
+  description="A collection of unhurried conversations about creativity, culture, and everyday life."
+>
+  <section
+    class="archive wrap"
+    data-episode-archive
+    data-page-size={config.content.episodes.perPage}
+  >
+    <header class="page-intro">
+      <span class="eyebrow">The listening room</span>
+      <h1>
+        One conversation.
+        <br />
+        <em>A new perspective.</em>
+      </h1>
+      <p>Find a voice, a question, or a little company for your day.</p>
+    </header>
+    <div class="archive-tools">
+      <div class="filters" role="group" aria-label="Filter episodes by topic">
+        <button type="button" data-filter="all" aria-pressed="true">
+          All episodes
+        </button>
+        {categories.map((category) => (
+          <button type="button" data-filter={category} aria-pressed="false">
+            {category}
+          </button>
+        ))}
+      </div>
+      <div class="search-field">
+        <label class="sr-only" for="episode-search">
+          Search episodes or guests
+        </label>
+        <input
+          id="episode-search"
+          type="search"
+          placeholder="Search episodes or guests…"
+        />
+      </div>
+    </div>
+    <p class="results-label" aria-live="polite" data-result-count>
+      {page.totalItems} conversations
+    </p>
+    <div class="episode-grid" data-episode-results>
+      {page.items.map((episode) => (
+        <EpisodeCard episode={episode} />
+      ))}
+    </div>
+    <div data-static-pagination>
+      <Pagination
+        currentPage={page.currentPage}
+        totalPages={page.totalPages}
+        base="/episodes/"
+        label="Episode pagination"
+      />
+    </div>
+    <nav
+      class="pagination"
+      aria-label="Filtered episode pagination"
+      data-filter-pagination
+      hidden
+    >
+      <div>
+        <button type="button" class="text-link" data-results-previous>
+          ← Previous
+        </button>
+      </div>
+      <span data-results-page></span>
+      <div>
+        <button type="button" class="text-link" data-results-next>
+          Next →
+        </button>
+      </div>
+    </nav>
+    <template data-episode-index>
+      {episodes.map((episode) => (
+        <EpisodeCard episode={episode} />
+      ))}
+    </template>
+    <p class="empty-state" data-empty hidden>
+      No conversations found. Try another topic or search.
+    </p>
+  </section>
+  <ListenBanner />
+  <script>
+    const archive = document.querySelector<HTMLElement>(
+      '[data-episode-archive]',
+    )
+    const search = document.querySelector<HTMLInputElement>('#episode-search')
+    const buttons =
+      document.querySelectorAll<HTMLButtonElement>('[data-filter]')
+    const grid = document.querySelector<HTMLElement>('[data-episode-results]')
+    const index = document.querySelector<HTMLTemplateElement>(
+      '[data-episode-index]',
+    )
+    const count = document.querySelector('[data-result-count]')
+    const empty = document.querySelector<HTMLElement>('[data-empty]')
+    const staticPagination = document.querySelector<HTMLElement>(
+      '[data-static-pagination]',
+    )
+    const filterPagination = document.querySelector<HTMLElement>(
+      '[data-filter-pagination]',
+    )
+    const previous = document.querySelector<HTMLButtonElement>(
+      '[data-results-previous]',
+    )
+    const next = document.querySelector<HTMLButtonElement>(
+      '[data-results-next]',
+    )
+    const pageLabel = document.querySelector('[data-results-page]')
+    const pageSize = Number(archive?.dataset.pageSize ?? 12)
+    const cards = Array.from(
+      index?.content.querySelectorAll<HTMLElement>('[data-episode-card]') ?? [],
+    )
+    const original = Array.from(grid?.children ?? []).map((card) =>
+      card.cloneNode(true),
+    )
+    let category = 'all'
+    let currentPage = 1
+    let filtered: HTMLElement[] = []
+
+    function renderResults() {
+      const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
+      currentPage = Math.min(currentPage, totalPages)
+      const start = (currentPage - 1) * pageSize
+      grid?.replaceChildren(
+        ...filtered
+          .slice(start, start + pageSize)
+          .map((card) => card.cloneNode(true)),
+      )
+      if (filterPagination) filterPagination.hidden = totalPages < 2
+      if (pageLabel)
+        pageLabel.textContent = `Page ${currentPage} of ${totalPages}`
+      if (previous) previous.disabled = currentPage === 1
+      if (next) next.disabled = currentPage === totalPages
+    }
+
+    function filterEpisodes() {
+      const query = search?.value.trim().toLowerCase() ?? ''
+      const isFiltering = query !== '' || category !== 'all'
+      if (staticPagination) staticPagination.hidden = isFiltering
+      if (!isFiltering) {
+        grid?.replaceChildren(...original.map((card) => card.cloneNode(true)))
+        if (count)
+          count.textContent = `${cards.length} ${cards.length === 1 ? 'conversation' : 'conversations'}`
+        if (empty) empty.hidden = cards.length > 0
+        if (filterPagination) filterPagination.hidden = true
+        return
+      }
+      filtered = cards.filter(
+        (card) =>
+          (category === 'all' || card.dataset.category === category) &&
+          (card.dataset.search ?? '').includes(query),
+      )
+      currentPage = 1
+      if (count)
+        count.textContent = `${filtered.length} ${filtered.length === 1 ? 'conversation' : 'conversations'}`
+      if (empty) empty.hidden = filtered.length > 0
+      renderResults()
+    }
+    buttons.forEach((button) =>
+      button.addEventListener('click', () => {
+        category = button.dataset.filter ?? 'all'
+        buttons.forEach((other) =>
+          other.setAttribute('aria-pressed', String(other === button)),
+        )
+        filterEpisodes()
+      }),
+    )
+    search?.addEventListener('input', filterEpisodes)
+    previous?.addEventListener('click', () => {
+      currentPage--
+      renderResults()
+    })
+    next?.addEventListener('click', () => {
+      currentPage++
+      renderResults()
+    })
+  </script>
+</BaseLayout>

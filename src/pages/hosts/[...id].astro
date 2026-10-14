@@ -1,0 +1,16 @@
+---
+import PersonProfile from '@/components/PersonProfile.astro'
+import { getHosts, type Host } from '@/lib/content'
+export async function getStaticPaths() {
+  return (await getHosts()).map((person) => ({
+    params: { id: person.id },
+    props: { person },
+  }))
+}
+interface Props {
+  person: Host
+}
+const { person } = Astro.props
+---
+
+<PersonProfile person={person} kind="host" />

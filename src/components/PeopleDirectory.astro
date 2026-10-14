@@ -1,0 +1,45 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PersonCard from './PersonCard.astro'
+import ListenBanner from './ListenBanner.astro'
+import { config } from '@/data/config'
+import type { Person } from '@/lib/content'
+interface Props {
+  people: Person[]
+  kind: 'host' | 'guest'
+}
+const { people, kind } = Astro.props
+const isHosts = kind === 'host'
+const title = isHosts ? 'Hosts' : 'Guests'
+const description = isHosts
+  ? 'Meet the people who ask the questions, guide the conversations, and write the journal.'
+  : 'Meet the writers, makers, and thoughtful voices who bring a new perspective to each conversation.'
+---
+
+<BaseLayout title={`${title} — ${config.site.name}`} description={description}>
+  <section class="people-directory archive wrap">
+    <header class="page-intro">
+      <span class="eyebrow">
+        {isHosts ? 'Behind the microphone' : 'Pull up a chair'}
+      </span>
+      <h1>
+        {isHosts ? 'The questions begin' : 'A conversation starts'}
+        <br />
+        <em>{isHosts ? 'with our hosts.' : 'with a guest.'}</em>
+      </h1>
+      <p>{description}</p>
+    </header>
+    <p class="people-count">
+      {people.length} {people.length === 1 ? kind : `${kind}s`}
+    </p>
+    <div class="people-directory-grid">
+      {people.map((person) => (
+        <PersonCard person={person} kind={kind} headingLevel={2} />
+      ))}
+    </div>
+    {people.length === 0 && (
+      <p class="empty-state">Our first guest conversation is on its way.</p>
+    )}
+  </section>
+  <ListenBanner />
+</BaseLayout>

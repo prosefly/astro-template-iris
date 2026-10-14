@@ -1,0 +1,13 @@
+---
+import BlogArchive from '@/components/BlogArchive.astro'
+import { config } from '@/data/config'
+import { getPosts } from '@/lib/content'
+import { createPaginationPage } from '@/lib/pagination'
+const page = createPaginationPage(
+  await getPosts(),
+  1,
+  config.content.blog.perPage,
+)
+---
+
+<BlogArchive page={page} />

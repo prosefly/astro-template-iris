@@ -1,0 +1,22 @@
+---
+import Brand from './Brand.astro'
+import { config } from '@/data/config'
+---
+
+<footer class="site-footer wrap">
+  <div class="footer-top">
+    <Brand />
+    <p>A little room for big ideas.</p>
+    <a href="/podcast.xml">Podcast RSS ↗</a>
+    <a href="/rss.xml">Journal RSS ↗</a>
+  </div>
+  <div class="footer-bottom">
+    <span>
+      © {new Date().getFullYear()} {config.podcast.copyright}
+    </span>
+    <span>
+      Made with <a href="https://prosefly.com/">Prosefly</a> & a little
+      curiosity.
+    </span>
+  </div>
+</footer>

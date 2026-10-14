@@ -1,0 +1,7 @@
+---
+import PeopleDirectory from '@/components/PeopleDirectory.astro'
+import { getHosts } from '@/lib/content'
+const people = await getHosts()
+---
+
+<PeopleDirectory people={people} kind="host" />

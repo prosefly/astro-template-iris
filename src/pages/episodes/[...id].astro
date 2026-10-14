@@ -1,0 +1,193 @@
+---
+import { AudioPlayer, Badge, Icon } from '@prosefly/astro-components'
+import { render } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import EpisodeCard from '@/components/EpisodeCard.astro'
+import PersonAvatar from '@/components/PersonAvatar.astro'
+import PersonCard from '@/components/PersonCard.astro'
+import {
+  getEpisodes,
+  formatDate,
+  formatTime,
+  formatNames,
+  personProfileUrl,
+  type Episode,
+} from '@/lib/content'
+export async function getStaticPaths() {
+  return (await getEpisodes()).map((episode) => ({
+    params: { id: episode.id },
+    props: { episode },
+  }))
+}
+interface Props {
+  episode: Episode
+}
+const { episode } = Astro.props
+const { data } = episode
+const { Content } = await render(episode)
+const related = (await getEpisodes())
+  .filter((other) => other.id !== episode.id)
+  .slice(0, 3)
+---
+
+<BaseLayout
+  title={`${data.title} — Iris`}
+  description={data.description}
+  image={data.artwork}
+  type="article"
+>
+  <article class="episode-detail wrap">
+    <a class="text-link back-link" href="/episodes/">
+      <Icon name="lucide:arrow-left" size={16} /> All episodes
+    </a>
+    <header class="episode-detail-header">
+      <div class="detail-meta">
+        <span class="eyebrow">
+          Season {data.season} · Episode {data.number}
+        </span>
+        <Badge variant="outline">{data.category}</Badge>
+        <time datetime={data.publishedAt.toISOString()}>
+          {formatDate(data.publishedAt)}
+        </time>
+        <span class="detail-duration">
+          <Icon name="lucide:headphones" size={13} />{' '}
+          {formatTime(data.audio.duration)}
+        </span>
+      </div>
+      <h1>{data.title}</h1>
+      <p class="episode-description">{data.description}</p>
+      <div class="episode-byline">
+        <div class="participant-group">
+          <span class="eyebrow">Hosted by</span>
+          <ul>
+            {episode.hosts.map((host) => (
+              <li>
+                <a class="person-chip" href={personProfileUrl(host)}>
+                  <PersonAvatar person={host} size={30} />
+                  <span>{host.data.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {episode.guests.length > 0 && (
+          <div class="participant-group">
+            <span class="eyebrow">In conversation with</span>
+            <ul>
+              {episode.guests.map((guest) => (
+                <li>
+                  <a class="person-chip" href={personProfileUrl(guest)}>
+                    <PersonAvatar person={guest} size={30} />
+                    <span>{guest.data.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <AudioPlayer
+        artwork={data.artwork}
+        src={data.audio.src}
+        duration={data.audio.duration}
+        title={data.title}
+        artist={formatNames([...episode.hosts, ...episode.guests])}
+        preload="metadata"
+      />
+    </header>
+    <div class="detail-body">
+      <aside class="episode-sidebar">
+        <span class="eyebrow">
+          {data.chapters.length > 0 ? 'In this conversation' : 'Episode links'}
+        </span>
+        {data.chapters.length > 0 && (
+          <ol class="chapter-list">
+            {data.chapters.map((chapter) => (
+              <li>
+                <button type="button" data-chapter={chapter.seconds}>
+                  <span>{formatTime(chapter.seconds)}</span>
+                  {chapter.title}
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+        <a class="text-link" href="#transcript">
+          Read the transcript <Icon name="lucide:arrow-right" size={16} />
+        </a>
+        <a class="text-link" href="#episode-people">
+          Meet the voices <Icon name="lucide:arrow-right" size={16} />
+        </a>
+        <p data-chapter-status role="status" class="chapter-status"></p>
+        <a class="text-link" href={data.audio.src} download>
+          Download audio <Icon name="lucide:arrow-up-right" size={16} />
+        </a>
+        <a class="text-link" href="/podcast.xml">
+          Subscribe to Iris <Icon name="lucide:rss" size={16} />
+        </a>
+      </aside>
+      <div class="episode-main">
+        <div class="prose">
+          <Content />
+        </div>
+        <section
+          class="episode-people"
+          id="episode-people"
+          aria-labelledby="people-heading"
+        >
+          <span class="eyebrow">The people behind the conversation</span>
+          <h2 id="people-heading">Voices in this episode.</h2>
+          <div class="person-grid">
+            {episode.guests.map((guest) => (
+              <PersonCard person={guest} kind="guest" />
+            ))}
+            {episode.hosts.map((host) => (
+              <PersonCard person={host} kind="host" />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+  <section class="episodes-section wrap">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Keep listening</span>
+        <h2>A little more company.</h2>
+      </div>
+    </div>
+    <div class="episode-grid">
+      {related.map((other) => (
+        <EpisodeCard episode={other} />
+      ))}
+    </div>
+  </section>
+  <script>
+    const audio = document.querySelector<HTMLAudioElement>('audio')
+    const status = document.querySelector('[data-chapter-status]')
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-chapter]')
+      .forEach((button) =>
+        button.addEventListener('click', async () => {
+          if (!audio) return
+          const seconds = Number(button.dataset.chapter)
+          function seek() {
+            if (audio) audio.currentTime = seconds
+          }
+          if (audio.readyState >= 1) seek()
+          else {
+            audio.addEventListener('loadedmetadata', seek, { once: true })
+            audio.load()
+          }
+          try {
+            await audio.play()
+            if (status) status.textContent = ''
+          } catch {
+            if (status)
+              status.textContent =
+                'Use the player’s play button to start listening.'
+          }
+        }),
+      )
+  </script>
+</BaseLayout>

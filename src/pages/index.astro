@@ -1,0 +1,161 @@
+---
+import { AudioPlayer, Badge, Icon } from '@prosefly/astro-components'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import EpisodeCard from '@/components/EpisodeCard.astro'
+import PostList from '@/components/PostList.astro'
+import ListenBanner from '@/components/ListenBanner.astro'
+import PodcastPlatforms from '@/components/PodcastPlatforms.astro'
+import { getEpisodes, getPosts, getHosts, formatNames } from '@/lib/content'
+const [episodes, posts, hosts] = await Promise.all([
+  getEpisodes(),
+  getPosts(),
+  getHosts(),
+])
+const latest = episodes[0]
+const featuredPeople = latest
+  ? latest.guests.length > 0
+    ? latest.guests
+    : latest.hosts
+  : []
+---
+
+<BaseLayout>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">
+        <span class="live-dot"></span> An independent podcast by{' '}
+        {formatNames(hosts)}
+      </span>
+      <h1>
+        A little room
+        <br />
+        for <em>big ideas.</em>
+      </h1>
+      <p>
+        Unhurried conversations with people who make, imagine, and see the world
+        a little differently.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href={latest ? '#latest' : '/episodes/'}>
+          <Icon name="lucide:headphones" size={18} /> Listen to the latest
+        </a>
+        <a class="text-link" href="/hosts/">
+          Meet your {hosts.length === 1 ? 'host' : 'hosts'}{' '}
+          <Icon name="lucide:arrow-up-right" size={17} />
+        </a>
+      </div>
+      <div class="hero-note">
+        <span class="note-line"></span> Good company. Fresh perspectives. No
+        rush.
+      </div>
+    </div>
+    <PodcastPlatforms />
+  </section>
+  <div class="frequency-strip">
+    <div class="wrap">
+      <span>Thoughtful voices. Open minds.</span>
+      <span>
+        Creativity <span aria-hidden="true">✳</span> Culture{' '}
+        <span aria-hidden="true">✳</span> Everyday life
+      </span>
+      <a href="/podcast.xml">
+        <Icon name="lucide:rss" size={16} /> Subscribe via RSS
+      </a>
+    </div>
+  </div>
+  {latest && (
+    <section
+      class="latest-section wrap"
+      id="latest"
+      aria-labelledby="latest-title"
+    >
+      <div class="latest-label">
+        <span class="eyebrow">Fresh from the studio</span>
+        <Badge color="accent" variant="soft">
+          Latest episode
+        </Badge>
+      </div>
+      <div class="latest-grid">
+        <div class="latest-copy">
+          <div class="eyebrow">
+            EPISODE {String(latest.data.number).padStart(2, '0')}{' '}
+            <span class="meta-separator">/</span> {latest.data.category}
+          </div>
+          <h2 id="latest-title">
+            <a href={`/episodes/${latest.id}/`}>{latest.data.title}</a>
+          </h2>
+          <p>{latest.data.description}</p>
+          <div class="guest-line">
+            With {formatNames(featuredPeople)}
+            {featuredPeople.length === 1 && (
+              <span> — {featuredPeople[0].data.role}</span>
+            )}
+          </div>
+          <AudioPlayer
+            artwork={latest.data.artwork}
+            title={latest.data.title}
+            artist={formatNames([...latest.hosts, ...latest.guests])}
+            src={latest.data.audio.src}
+            duration={latest.data.audio.duration}
+            preload="none"
+            aria-label={`Play ${latest.data.title}`}
+          />
+          <a class="text-link" href={`/episodes/${latest.id}/`}>
+            Show notes & transcript{' '}
+            <Icon name="lucide:arrow-up-right" size={17} />
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+  <section class="episodes-section wrap" aria-labelledby="episodes-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Pull up a chair</span>
+        <h2 id="episodes-heading">More good conversations.</h2>
+      </div>
+      <a class="text-link" href="/episodes/">
+        All episodes <Icon name="lucide:arrow-up-right" size={18} />
+      </a>
+    </div>
+    <div class="episode-grid">
+      {episodes.slice(1, 4).map((episode) => (
+        <EpisodeCard episode={episode} />
+      ))}
+    </div>
+    {episodes.length === 0 && <p>The first conversation is on its way.</p>}
+  </section>
+  <section class="host-note wrap">
+    <span class="host-flower" aria-hidden="true">
+      ✳
+    </span>
+    <div class="host-profiles">
+      {hosts.map((host) => (
+        <article>
+          <p class="host-note-copy">{host.data.bio}</p>
+          <p class="host-profile-meta">
+            {host.data.name} <span>{host.data.role}</span>
+          </p>
+        </article>
+      ))}
+    </div>
+    <a class="text-link" href="/hosts/">
+      Meet your {hosts.length === 1 ? 'host' : 'hosts'}{' '}
+      <Icon name="lucide:arrow-up-right" size={18} />
+    </a>
+  </section>
+  <section class="journal-section wrap" aria-labelledby="journal-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Beyond the microphone</span>
+        <h2 id="journal-heading">The journal.</h2>
+        <p>Loose thoughts, field notes, and things worth keeping.</p>
+      </div>
+      <a class="text-link" href="/blog/">
+        All writing <Icon name="lucide:arrow-up-right" size={18} />
+      </a>
+    </div>
+    <PostList posts={posts.slice(0, 3)} />
+  </section>
+  <ListenBanner />
+</BaseLayout>

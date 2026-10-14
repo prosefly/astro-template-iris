@@ -1,0 +1,84 @@
+---
+import { Icon } from '@prosefly/astro-components'
+import PersonAvatar from './PersonAvatar.astro'
+import { personProfileUrl, type Person } from '@/lib/content'
+interface Props {
+  person: Person
+  kind: 'host' | 'guest' | 'author'
+  headingLevel?: 2 | 3
+}
+const { person, kind, headingLevel = 3 } = Astro.props
+const Heading = headingLevel === 2 ? 'h2' : 'h3'
+const labels = { host: 'Your host', guest: 'Our guest', author: 'Written by' }
+---
+
+<article class="person-card" id={`${kind}-${person.id}`}>
+  <span class="eyebrow">{labels[kind]}</span>
+  <header>
+    <PersonAvatar person={person} size={48} />
+    <Heading>
+      <a href={personProfileUrl(person)}>{person.data.name}</a>
+    </Heading>
+  </header>
+  <p class="person-role">{person.data.role}</p>
+  <p class="person-bio">{person.data.bio}</p>
+  {person.data.links.length > 0 && (
+    <ul class="person-links">
+      {person.data.links.map((link) => (
+        <li>
+          <a class="text-link" href={link.url}>
+            {link.label} <Icon name="lucide:arrow-up-right" size={14} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</article>
+<style>
+  .person-card {
+    padding: var(--card-padding);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-card);
+    scroll-margin-top: 24px;
+  }
+  .person-card header {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .person-card .eyebrow {
+    font-size: var(--text-fine);
+    color: var(--color-accent);
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+  .person-card :is(h2, h3) {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-person-name);
+    font-weight: var(--weight-regular);
+  }
+  .person-card :is(h2, h3) a:hover {
+    color: var(--color-accent);
+  }
+  .person-role {
+    margin-block: 18px 10px;
+    font-size: var(--text-meta);
+    color: var(--color-ink);
+  }
+  .person-bio {
+    margin-bottom: 0;
+    font-size: var(--text-ui);
+    line-height: var(--line-height-bio);
+    color: var(--color-muted);
+  }
+  .person-links {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

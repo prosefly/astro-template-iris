@@ -1,0 +1,204 @@
+/*
+ * Iris theme settings. Edit these values to customize the template.
+ * Responsive overrides and Prosefly aliases are included below.
+ */
+:root {
+  /* Colors */
+  --color-canvas: #f6f3eb;
+  --color-ink: #26352e;
+  --color-muted: #62685d;
+  --color-accent: #bc4b29;
+  --color-line: #d8d9cc;
+  --color-surface: #ecebe1;
+  --color-card: #efeee5;
+  --color-inset: #e9eadf;
+  --color-inset-border: #e0e1d3;
+  --color-prose: #4f594f;
+  --color-meta-separator: #a1a794;
+  --color-accent-soft: #f0e2d3;
+  --color-accent-contrast: #fff8ee;
+  --color-border-muted: #b8bbaa;
+  --color-selection: #e9bda2;
+  --color-button-hover: #3d5246;
+  --color-progress-track: #d4d7c8;
+
+  /* Fonts and shared text sizes */
+  --font-sans: 'Geist Variable', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --text-fine: 0.75rem;
+  --text-caption: var(--text-fine);
+  --text-meta: 0.8125rem;
+  --text-ui: 0.875rem;
+  --text-small: 0.9375rem;
+  --text-compact: 1rem;
+  --text-body: 1rem;
+  --text-lead: 1.0625rem;
+  --text-intro: 1.125rem;
+  --text-prose: var(--text-lead);
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-label: 550;
+  --weight-brand: 600;
+  --line-height-tight: 1;
+  --line-height-title: 1.2;
+  --line-height-label: 1.6;
+  --line-height-ui: 1.5;
+  --line-height-platform-heading: 1.15;
+  --line-height-quote: 1.4;
+  --line-height-body: 1.65;
+  --line-height-heading: 1.04;
+  --line-height-subheading: 1.3;
+  --line-height-description: 1.75;
+  --line-height-prose: 1.75;
+  --line-height-bio: 1.75;
+  --tracking-heading: -0.025em;
+  --tracking-eyebrow: 0.12em;
+  --tracking-meta: 0.09em;
+  --tracking-brand: -0.09em;
+
+  /* Titles and editorial text */
+  --text-display: clamp(3.6rem, 7.4vw, 6.6rem);
+  --text-heading: clamp(2.6rem, 4vw, 3.5rem);
+  --text-hero: var(--text-display);
+  --text-hero-label: var(--text-caption);
+  --text-page-title: clamp(3.7rem, 6.5vw, 5.8rem);
+  --text-episode-title: clamp(3.2rem, 5.6vw, 4.7rem);
+  --text-article-title: clamp(3.1rem, 6vw, 5rem);
+  --text-profile-title: clamp(3.4rem, 6vw, 5.4rem);
+  --text-featured-title: clamp(2.3rem, 3.7vw, 3.3rem);
+  --text-card-title: 1.6875rem;
+  --text-person-name: 1.6875rem;
+  --text-post-title: 1.75rem;
+  --text-host-note: 1.875rem;
+  --text-banner-title: 2.3125rem;
+  --text-platform-title: 2.125rem;
+  --text-show-name: 1.75rem;
+  --text-subsection-title: 2.25rem;
+  --text-prose-heading: var(--text-subsection-title);
+  --text-prose-subheading: 1.25rem;
+  --text-quote: 1.75rem;
+  --text-related-title: 1.875rem;
+  --text-authors-title: 2rem;
+  --text-brand: 2.25rem;
+  --text-header-brand: var(--text-brand);
+
+  /* Shared spacing scale; small optical adjustments remain in layout CSS. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Layout */
+  --width-site: 1180px;
+  --width-reading: 700px;
+  --episode-grid-columns: 3;
+  --width-article: 900px;
+  --width-article-header: 740px;
+  --width-detail: 1060px;
+  --width-episode-header: 780px;
+  --width-bio: 650px;
+  --page-gutter: 48px;
+  --section-spacing: 65px;
+  --featured-spacing: 66px;
+  --hero-spacing-start: 76px;
+  --hero-spacing-end: 78px;
+  --hero-gap: var(--space-16);
+  --card-padding: var(--space-6);
+  --panel-padding: var(--space-7);
+
+  /* Shape, focus, and motion */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-button: 5px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 5px;
+  --motion-button: 180ms;
+  --motion-artwork: 280ms;
+  --motion-easing: ease;
+
+  /* Player settings */
+  --player-padding: 15px;
+  --player-detail-padding: 18px;
+  --player-control-size: 2.25rem;
+
+  /* Prosefly components follow the Iris theme. Override an alias for a component-specific theme. */
+  --pf-background: var(--color-canvas);
+  --pf-surface: var(--color-surface);
+  --pf-text-strong: var(--color-ink);
+  --pf-text: var(--color-ink);
+  --pf-text-muted: var(--color-muted);
+  --pf-accent: var(--color-accent);
+  --pf-accent-soft: var(--color-accent-soft);
+  --pf-accent-contrast: var(--color-accent-contrast);
+  --pf-border-subtle: var(--color-line);
+  --pf-border-muted: var(--color-border-muted);
+  --pf-font-sans: var(--font-sans);
+  --pf-radius-sm: var(--radius-sm);
+  --pf-radius-md: var(--radius-md);
+  --pf-radius-lg: var(--radius-xl);
+  --pf-audio-player-padding: var(--player-padding);
+  --pf-audio-player-radius: var(--radius-md);
+  --pf-audio-player-progress-color: var(--color-accent);
+  --pf-audio-player-thumb-color: var(--color-accent);
+  --pf-audio-player-progress-background: var(--color-progress-track);
+  --pf-audio-player-control-size: var(--player-control-size);
+  color-scheme: light;
+}
+
+/* CSS custom properties cannot be used as media-query breakpoints. */
+@media (min-width: 1400px) {
+  :root {
+    --hero-gap: 85px;
+  }
+}
+@media (max-width: 1000px) {
+  :root {
+    --page-gutter: 32px;
+    --hero-gap: 35px;
+    --hero-spacing-start: 60px;
+    --hero-spacing-end: 60px;
+    --text-hero: 4.6875rem;
+    --text-host-note: 1.5625rem;
+    --text-banner-title: 1.9375rem;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    --page-gutter: 20px;
+    --episode-grid-columns: 2;
+    --section-spacing: var(--space-10);
+    --featured-spacing: var(--space-10);
+    --hero-gap: var(--space-12);
+    --hero-spacing-start: 43px;
+    --hero-spacing-end: var(--space-12);
+    --text-hero: clamp(4rem, 13vw, 5.5rem);
+    --text-page-title: 3.625rem;
+    --text-episode-title: clamp(2.4375rem, 10vw, 3.4375rem);
+    --text-article-title: 2.9375rem;
+    --text-profile-title: 2.625rem;
+    --text-featured-title: 2.5625rem;
+    --text-card-title: 1.6875rem;
+    --text-prose: var(--text-body);
+    --text-subsection-title: 1.875rem;
+    --text-authors-title: var(--text-subsection-title);
+    --text-post-title: 1.625rem;
+    --text-host-note: 1.5rem;
+    --text-banner-title: var(--text-subsection-title);
+    --text-header-brand: 1.875rem;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --episode-grid-columns: 1;
+  }
+}

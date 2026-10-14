@@ -1,0 +1,107 @@
+---
+import { Icon } from '@prosefly/astro-components'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import PersonAvatar from './PersonAvatar.astro'
+import EpisodeCard from './EpisodeCard.astro'
+import PostList from './PostList.astro'
+import { config } from '@/data/config'
+import { getEpisodes, getPosts, type Person } from '@/lib/content'
+interface Props {
+  person: Person
+  kind: 'host' | 'guest'
+}
+const { person, kind } = Astro.props
+const [allEpisodes, allPosts] = await Promise.all([
+  getEpisodes(),
+  kind === 'host' ? getPosts() : Promise.resolve([]),
+])
+const episodes = allEpisodes.filter((episode) =>
+  (kind === 'host' ? episode.hosts : episode.guests).some(
+    (participant) => participant.id === person.id,
+  ),
+)
+const posts = allPosts.filter((post) =>
+  post.authors.some((author) => author.id === person.id),
+)
+const directory = kind === 'host' ? '/hosts/' : '/guests/'
+---
+
+<BaseLayout
+  title={`${person.data.name} — ${kind === 'host' ? 'Host' : 'Guest'} — ${config.site.name}`}
+  description={person.data.bio}
+>
+  <article class="person-profile wrap">
+    <a class="text-link back-link" href={directory}>
+      <Icon name="lucide:arrow-left" size={16} /> All {kind}s
+    </a>
+    <header class="person-profile-header">
+      <span class="eyebrow profile-label">
+        {kind === 'host'
+          ? `Host of ${config.site.name}`
+          : `A guest on ${config.site.name}`}
+      </span>
+      <PersonAvatar person={person} size={100} />
+      <div class="profile-identity">
+        <h1>{person.data.name}</h1>
+        <p class="profile-role">{person.data.role}</p>
+      </div>
+      <p class="profile-bio">{person.data.bio}</p>
+      {person.data.links.length > 0 && (
+        <ul class="profile-links">
+          {person.data.links.map((link) => (
+            <li>
+              <a class="text-link" href={link.url}>
+                {link.label} <Icon name="lucide:arrow-up-right" size={16} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </header>
+    <section class="profile-episodes" aria-labelledby="conversations-heading">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">
+            {episodes.length}{' '}
+            {episodes.length === 1 ? 'conversation' : 'conversations'}
+          </span>
+          <h2 id="conversations-heading">
+            {kind === 'host'
+              ? 'Behind the microphone.'
+              : 'In the listening room.'}
+          </h2>
+          <p>
+            Recent episodes {kind === 'host' ? 'hosted by' : 'with'}{' '}
+            {person.data.name}.
+          </p>
+        </div>
+        <a class="text-link" href="/episodes/">
+          All episodes <Icon name="lucide:arrow-up-right" size={17} />
+        </a>
+      </div>
+      <div class="episode-grid">
+        {episodes.slice(0, 6).map((episode) => (
+          <EpisodeCard episode={episode} />
+        ))}
+      </div>
+      {episodes.length === 0 && (
+        <p class="profile-empty">No episodes have been published yet.</p>
+      )}
+    </section>
+    {posts.length > 0 && (
+      <section class="profile-writing" aria-labelledby="writing-heading">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Beyond the microphone</span>
+            <h2 id="writing-heading">From the journal.</h2>
+            <p>Recent writing by {person.data.name}.</p>
+          </div>
+          <a class="text-link" href="/blog/">
+            All writing <Icon name="lucide:arrow-up-right" size={17} />
+          </a>
+        </div>
+        <PostList posts={posts.slice(0, 3)} />
+      </section>
+    )}
+  </article>
+</BaseLayout>
