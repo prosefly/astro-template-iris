@@ -103,9 +103,9 @@ audio:
   duration: '40:00'
 chapters:
   - title: Getting started
-    seconds: '00:00'
+    start: '00:00'
   - title: Finding a practice
-    seconds: '10:20'
+    start: '10:20'
 ---
 ```
 
@@ -117,7 +117,7 @@ single URL:
 transcript: https://media.example.com/your-episode.vtt
 ```
 
-VTT, SRT, TXT, HTML, and JSON types are inferred from the URL suffix. Duration and chapter times
+VTT, SRT, TXT, HTML, and JSON types are inferred from the URL suffix. Duration and chapter start times
 accept quoted `MM:SS` or `HH:MM:SS` timestamps, as well as numeric seconds. Journal posts reference
 host IDs through `authors` and can link to an episode with `episode: your-episode`.
 

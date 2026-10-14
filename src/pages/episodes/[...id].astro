@@ -104,8 +104,8 @@ const related = (await getEpisodes())
           <ol class="chapter-list">
             {data.chapters.map((chapter) => (
               <li>
-                <button type="button" data-chapter={chapter.seconds}>
-                  <span>{formatTime(chapter.seconds)}</span>
+                <button type="button" data-chapter={chapter.start}>
+                  <span>{formatTime(chapter.start)}</span>
                   {chapter.title}
                 </button>
               </li>

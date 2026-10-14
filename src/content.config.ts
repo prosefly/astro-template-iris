@@ -48,7 +48,7 @@ const episodes = defineCollection({
     }),
     transcript: transcriptSchema.optional(),
     chapters: z
-      .array(z.object({ title: z.string(), seconds: timestampSchema }))
+      .array(z.object({ title: z.string(), start: timestampSchema }))
       .default([]),
   }),
 })

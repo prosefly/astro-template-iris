@@ -49,9 +49,9 @@ audio:
   duration: '40:00' # MM:SS; HH:MM:SS or numeric seconds also work
 chapters:
   - title: Getting started
-    seconds: '00:00'
+    start: '00:00'
   - title: Finding a practice
-    seconds: '10:20'
+    start: '10:20'
 ---
 
 import { Callout } from '@prosefly/astro-components'
@@ -69,7 +69,7 @@ Write show notes in Markdown here.
 **Host:** Add an accurate transcript of your recording.
 ```
 
-Put audio files in `public/audio/`, SVG originals in `public/artwork/`, and PNG/JPEG covers in `public/images/`, or use absolute HTTPS URLs for hosted media. `audio.size` is the actual audio file size in bytes (a positive integer). `audio.duration` accepts positive numeric seconds or quoted timestamps such as `"00:53"` (MM:SS) and `"01:20:30"` (HH:MM:SS). Fractional seconds are supported, for example `"00:53.019"`. Seconds must be below 60; minutes must also be below 60 when an hour field is present. A two-part timestamp may use total minutes, such as `"80:30"`. Content loading validates and normalizes every format to numeric seconds. RSS maps these fields to enclosure `length` and `itunes:duration`; the player uses the same duration. Chapter `seconds` accepts the same numeric or quoted MM:SS / HH:MM:SS formats, including fractional seconds. Unlike duration, a chapter may start at zero (`0` or `"00:00"`). Values are normalized to numeric seconds for chapter navigation and JSON Chapters output. Chapter timestamps must be within that recording. Each episode should have a unique number, a stable filename, and a recording URL that doesn’t change after publication.
+Put audio files in `public/audio/`, SVG originals in `public/artwork/`, and PNG/JPEG covers in `public/images/`, or use absolute HTTPS URLs for hosted media. `audio.size` is the actual audio file size in bytes (a positive integer). `audio.duration` accepts positive numeric seconds or quoted timestamps such as `"00:53"` (MM:SS) and `"01:20:30"` (HH:MM:SS). Fractional seconds are supported, for example `"00:53.019"`. Seconds must be below 60; minutes must also be below 60 when an hour field is present. A two-part timestamp may use total minutes, such as `"80:30"`. Content loading validates and normalizes every format to numeric seconds. RSS maps these fields to enclosure `length` and `itunes:duration`; the player uses the same duration. Chapter `start` accepts the same numeric or quoted MM:SS / HH:MM:SS formats, including fractional seconds. Unlike duration, a chapter may start at zero (`0` or `"00:00"`). Values are normalized to numeric seconds for chapter navigation and JSON Chapters output. Chapter timestamps must be within that recording. Each episode should have a unique number, a stable filename, and a recording URL that doesn’t change after publication.
 
 See the [podcast RSS guide](rss.md) for artwork requirements and feed output.
 

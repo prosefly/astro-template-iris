@@ -18,9 +18,9 @@ export function GET({ props }: APIContext<{ episode: Episode }>) {
       version: '1.2.0',
       title: episode.data.title,
       chapters: [...episode.data.chapters]
-        .sort((a, b) => a.seconds - b.seconds)
+        .sort((a, b) => a.start - b.start)
         .map((chapter) => ({
-          startTime: chapter.seconds,
+          startTime: chapter.start,
           title: chapter.title,
         })),
     }),
